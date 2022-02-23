@@ -24,7 +24,6 @@
             <button id="mid">中部</button>
             <button id="south">南部</button>
             <button id="east">東部</button>
-            <button id="test">test</button>
         </div>
         <h1 class="text-center">各縣市累積降雨量</h1>
         <table id="table_id" class="table table-hover table-striped text-center">
@@ -164,8 +163,8 @@
                     const east = ["花蓮縣", "臺東縣"];
 
                     $("#north").on("click", function () {
+                        $("#table_id").DataTable().destroy();
                         $("tbody").html("");
-                        // $("#table_id").DataTable().destroy();
                         // $("#table_id").empty();
                         // $("#table_id").empty();
                         // $("#table_id").hide();
@@ -189,6 +188,7 @@
 
                     })
                     $("#mid").on("click", function () {
+                        $("#table_id").DataTable().destroy();
                         $("tbody").html("");
                         $("h1").text(`${time0.getFullYear()}/${time0.getMonth() + 1}/${time0.getDate()}中部地區累積降雨量`);
                         for (i = 0; i < data.length; i++) {
@@ -206,9 +206,11 @@
                     </tr>`);
                             }
                         }
+                        $("#table_id").DataTable();
 
                     })
                     $("#south").on("click", function () {
+                        $("#table_id").DataTable().destroy();
                         $("tbody").html("");
                         $("h1").text(`${time0.getFullYear()}/${time0.getMonth() + 1}/${time0.getDate()}南部地區累積降雨量`);
                         for (i = 0; i < data.length; i++) {
@@ -226,9 +228,11 @@
                     </tr>`);
                             }
                         }
+                        $("#table_id").DataTable();
 
                     })
                     $("#east").on("click", function () {
+                        $("#table_id").DataTable().destroy();
                         $("tbody").html("");
                         $("h1").text(`${time0.getFullYear()}/${time0.getMonth() + 1}/${time0.getDate()}東部地區累積降雨量`);
                         for (i = 0; i < data.length; i++) {
@@ -246,6 +250,7 @@
                     </tr>`);
                             }
                         }
+                        $("#table_id").DataTable();
 
                     })
                     $("#all").on("click", function () {
