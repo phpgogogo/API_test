@@ -17,48 +17,52 @@
 </head>
 
 <body>
-    <div class="container">
-        <div>
-            <button id="all">全部</button>
-            <button id="north">北部</button>
-            <button id="mid">中部</button>
-            <button id="south">南部</button>
-            <button id="east">東部</button>
-        </div>
+    <div class="container mt-5">
         <h1 class="text-center">各縣市累積降雨量</h1>
-        <table id="table_id" class="table table-hover table-striped text-center">
-            <thead>
-                <tr>
-                    <th>id</th>
-                    <th>縣市</th>
-                    <th>時間1</th>
-                    <th>時間2</th>
-                    <th>時間3</th>
-                    <th>時間4</th>
-                    <th>時間5</th>
-                    <th>時間6</th>
+        <div class="table-responsive">
+            <table id="table_id" class="table table-hover table-striped text-center col-md-12">
+                <thead>
+                    <tr class="table-primary">
+                        <th>id</th>
+                        <th>縣市</th>
+                        <th>時間1</th>
+                        <th>時間2</th>
+                        <th>時間3</th>
+                        <th>時間4</th>
+                        <th>時間5</th>
+                        <th>時間6</th>
+    
+                    </tr>
+                </thead>
+                <tbody>
+    
+                </tbody>
+            </table>
+        </div>
 
-                </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-        </table>
-
-        <!-- Button trigger modal -->
-        <button id="60min_total" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            各地區60分鐘總降雨量
-        </button>
-        <button id="24hr_total" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            各地區24小時總降雨量
-        </button>
+        <div class="mt-2 col-md-12">
+            <button class="btn btn-primary" id="all">全部</button>
+            <button class="btn btn-success" id="north">北部</button>
+            <button class="btn btn-info" id="mid">中部</button>
+            <button class="btn btn-warning" id="south">南部</button>
+            <button class="btn btn-danger" id="east">東部</button>
+            <!-- Button trigger modal -->
+            <button id="60min_total" type="button" class="btn btn-primary" data-toggle="modal"
+                data-target="#exampleModal">
+                各地區60分鐘總降雨量
+            </button>
+            <button id="24hr_total" type="button" class="btn btn-success" data-toggle="modal"
+                data-target="#exampleModal">
+                各地區24小時總降雨量
+            </button>
+        </div>
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">各地區60分鐘總雨量</h5>
+                        <h5 class="modal-title" id="exampleModalLabel"></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -68,8 +72,7 @@
                         <canvas id="myChart2"></canvas>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -327,84 +330,87 @@
                     $("#60min_total").on("click", function () {
                         $("#myChart2").hide();
                         $("#myChart").show();
-                        
+                        $("#exampleModalLabel").text("各地區60分鐘總降雨量");
+
                     });
+                    // 各地區24小時總降雨量
                     $("#24hr_total").on("click", function () {
                         $("#myChart2").show();
                         $("#myChart").hide();
-                        
+                        $("#exampleModalLabel").text("各地區24小時總降雨量");
+
                     });
                     const ctx = document.getElementById('myChart');
-                        const myChart = new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: ['北部', '中部', '南部', '東部'],
-                                datasets: [{
-                                    label: '60分鐘總雨量(mm)',
-                                    data: [north_total, mid_total, south_total, east_total],
-                                    backgroundColor: [
-                                        'rgba(255, 99, 132, 0.2)',
-                                        'rgba(54, 162, 235, 0.2)',
-                                        'rgba(255, 206, 86, 0.2)',
-                                        'rgba(75, 192, 192, 0.2)',
-                                        'rgba(153, 102, 255, 0.2)',
-                                        'rgba(255, 159, 64, 0.2)'
-                                    ],
-                                    borderColor: [
-                                        'rgba(255, 99, 132, 1)',
-                                        'rgba(54, 162, 235, 1)',
-                                        'rgba(255, 206, 86, 1)',
-                                        'rgba(75, 192, 192, 1)',
-                                        'rgba(153, 102, 255, 1)',
-                                        'rgba(255, 159, 64, 1)'
-                                    ],
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                scales: {
-                                    y: {
-                                        beginAtZero: true
-                                    }
+                    const myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['北部', '中部', '南部', '東部'],
+                            datasets: [{
+                                label: '60分鐘總雨量(mm)',
+                                data: [north_total, mid_total, south_total, east_total],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(153, 102, 255, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
                                 }
                             }
-                        });
+                        }
+                    });
 
-                        const ctx2 = document.getElementById('myChart2');
-                        const myChart2 = new Chart(ctx2, {
-                            type: 'bar',
-                            data: {
-                                labels: ['北部', '中部', '南部', '東部'],
-                                datasets: [{
-                                    label: '24小時總雨量(mm)',
-                                    data: [north_total24, mid_total24, south_total24, east_total24],
-                                    backgroundColor: [
-                                        'rgba(255, 99, 132, 0.2)',
-                                        'rgba(54, 162, 235, 0.2)',
-                                        'rgba(255, 206, 86, 0.2)',
-                                        'rgba(75, 192, 192, 0.2)',
-                                        'rgba(153, 102, 255, 0.2)',
-                                        'rgba(255, 159, 64, 0.2)'
-                                    ],
-                                    borderColor: [
-                                        'rgba(255, 99, 132, 1)',
-                                        'rgba(54, 162, 235, 1)',
-                                        'rgba(255, 206, 86, 1)',
-                                        'rgba(75, 192, 192, 1)',
-                                        'rgba(153, 102, 255, 1)',
-                                        'rgba(255, 159, 64, 1)'
-                                    ],
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                scales: {
-                                    y: {
-                                        beginAtZero: true
-                                    }
+                    const ctx2 = document.getElementById('myChart2');
+                    const myChart2 = new Chart(ctx2, {
+                        type: 'bar',
+                        data: {
+                            labels: ['北部', '中部', '南部', '東部'],
+                            datasets: [{
+                                label: '24小時總雨量(mm)',
+                                data: [north_total24, mid_total24, south_total24, east_total24],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(153, 102, 255, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
                                 }
                             }
-                        });
+                        }
+                    });
 
 
 
