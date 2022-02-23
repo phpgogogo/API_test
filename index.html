@@ -24,6 +24,7 @@
             <button id="mid">中部</button>
             <button id="south">南部</button>
             <button id="east">東部</button>
+            <button id="test">test</button>
         </div>
         <h1 class="text-center">各縣市累積降雨量</h1>
         <table id="table_id" class="table table-hover table-striped text-center">
@@ -44,6 +45,31 @@
                 
             </tbody>
         </table>
+        <!-- Button trigger modal -->
+<button id="north_total" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    北部地區60分鐘總降雨量
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">各地區60分鐘總雨量</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <canvas id="myChart"></canvas>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
     </div>
@@ -64,6 +90,10 @@
     <!-- datatable -->
     <script type="text/javascript" charset="utf8"
         src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"></script>
+    <!-- chart js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"
+        integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- 先載入 END-->
 
     <script>
@@ -211,8 +241,78 @@
                 })
                 $("#table_id").DataTable();
 
-                
-                
+                // 各地區60分鐘總降雨量
+                $("#north_total").on("click",function(){
+                    // $(".container").html("");
+                    north_total=0;
+                    mid_total=0;
+                    south_total=0;
+                    east_total=0;
+                    north_length=0;
+                    mid_length=0;
+                    south_length=0;
+                    east_length=0;
+                    data.forEach((value,key)=>{
+                        if(north.indexOf(value.parameter[0].parameterValue)>=0 && parseFloat(value.weatherElement[1].elementValue.value)>=0){
+                            north_total=north_total+parseFloat(value.weatherElement[1].elementValue.value);
+                            north_length++;
+                        }
+                        if(mid.indexOf(value.parameter[0].parameterValue)>=0 && parseFloat(value.weatherElement[1].elementValue.value)>=0){
+                            mid_total=mid_total+parseFloat(value.weatherElement[1].elementValue.value);
+                            mid_length++;
+                        }
+                        if(south.indexOf(value.parameter[0].parameterValue)>=0 && parseFloat(value.weatherElement[1].elementValue.value)>=0){
+                            south_total=south_total+parseFloat(value.weatherElement[1].elementValue.value);
+                            south_length++;
+                        }
+                        if(east.indexOf(value.parameter[0].parameterValue)>=0 && parseFloat(value.weatherElement[1].elementValue.value)>=0){
+                            east_total=east_total+parseFloat(value.weatherElement[1].elementValue.value);
+                            east_length++;
+                        }
+                    })
+                    console.log("北部60分鐘總雨量",north_total,"資料筆數:",north_length);
+                    console.log("中部60分鐘總雨量",mid_total,"資料筆數:",mid_length);
+                    console.log("南部60分鐘總雨量",south_total,"資料筆數:",south_length);
+                    console.log("東部60分鐘總雨量",east_total,"資料筆數:",east_length);
+                    const ctx = document.getElementById('myChart');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['北部', '中部', '南部', '東部'],
+                datasets: [{
+                    label: '60分鐘總雨量(mm)',
+                    data: [north_total,mid_total,south_total,east_total],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+                    
+                    
+                })
             }
             
                 
@@ -220,6 +320,7 @@
             
             
         });
+        
         
 
 
