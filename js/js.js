@@ -6,27 +6,27 @@ $(document).ready(function () {
         dataType: 'json',
         success: function (result) {
             data = result.cwbopendata.location;
-            console.log("縣市:", data[0].parameter[0].parameterValue);
-            console.log("地名:", data[0].locationName);
-            console.log("高度:", data[0].weatherElement[0].elementValue.value, "公尺");
-            console.log("測量時間:", data[0].time.obsTime);
-            console.log("60分鐘累積雨量:", data[0].weatherElement[1].elementValue.value, "mm");
-            console.log("10分鐘累積雨量:", data[0].weatherElement[2].elementValue.value, "mm");
-            console.log("3小時累積雨量:", data[0].weatherElement[3].elementValue.value, "mm");
-            console.log("6小時累積雨量:", data[0].weatherElement[4].elementValue.value, "mm");
-            console.log("12小時累積雨量:", data[0].weatherElement[5].elementValue.value, "mm");
-            console.log("24小時累積雨量:", data[0].weatherElement[6].elementValue.value, "mm");
-            console.log("本日累積雨量:", data[0].weatherElement[7].elementValue.value, "mm");
-            console.log("前1日0時到現在之累積雨量:", data[0].weatherElement[8].elementValue.value, "mm");
-            console.log("前2日0時到現在之累積雨量:", data[0].weatherElement[9].elementValue.value, "mm");
+            // console.log("縣市:", data[0].parameter[0].parameterValue);
+            // console.log("地名:", data[0].locationName);
+            // console.log("高度:", data[0].weatherElement[0].elementValue.value, "公尺");
+            // console.log("測量時間:", data[0].time.obsTime);
+            // console.log("60分鐘累積雨量:", data[0].weatherElement[1].elementValue.value, "mm");
+            // console.log("10分鐘累積雨量:", data[0].weatherElement[2].elementValue.value, "mm");
+            // console.log("3小時累積雨量:", data[0].weatherElement[3].elementValue.value, "mm");
+            // console.log("6小時累積雨量:", data[0].weatherElement[4].elementValue.value, "mm");
+            // console.log("12小時累積雨量:", data[0].weatherElement[5].elementValue.value, "mm");
+            // console.log("24小時累積雨量:", data[0].weatherElement[6].elementValue.value, "mm");
+            // console.log("本日累積雨量:", data[0].weatherElement[7].elementValue.value, "mm");
+            // console.log("前1日0時到現在之累積雨量:", data[0].weatherElement[8].elementValue.value, "mm");
+            // console.log("前2日0時到現在之累積雨量:", data[0].weatherElement[9].elementValue.value, "mm");
             // time0.getFullYear()
             time0 = new Date(data[0].time.obsTime);
-            console.log(time0);
-            console.log("year", time0.getFullYear());
-            console.log("month", time0.getMonth() + 1);
-            console.log("day", time0.getDate());
-            console.log("hour", time0.getHours());
-            console.log("資料筆數:", data.length);
+            // console.log(time0);
+            // console.log("year", time0.getFullYear());
+            // console.log("month", time0.getMonth() + 1);
+            // console.log("day", time0.getDate());
+            // console.log("hour", time0.getHours());
+            // console.log("資料筆數:", data.length);
 
             $("h1").prepend(`${time0.getFullYear()}/${time0.getMonth() + 1}/${time0.getDate()}`);
             $("tr>th").eq(1).text(`縣市`)
@@ -213,10 +213,10 @@ $(document).ready(function () {
                     east_length++;
                 }
             })
-            console.log("北部60分鐘總雨量", north_total, "資料筆數:", north_length);
-            console.log("中部60分鐘總雨量", mid_total, "資料筆數:", mid_length);
-            console.log("南部60分鐘總雨量", south_total, "資料筆數:", south_length);
-            console.log("東部60分鐘總雨量", east_total, "資料筆數:", east_length);
+            // console.log("北部60分鐘總雨量", north_total, "資料筆數:", north_length);
+            // console.log("中部60分鐘總雨量", mid_total, "資料筆數:", mid_length);
+            // console.log("南部60分鐘總雨量", south_total, "資料筆數:", south_length);
+            // console.log("東部60分鐘總雨量", east_total, "資料筆數:", east_length);
 
             // 撈出各地區24小時總雨量
             north_total24 = 0;
@@ -245,10 +245,10 @@ $(document).ready(function () {
                     east_length24++;
                 }
             })
-            console.log("北部24小時總雨量", north_total24, "資料筆數:", north_length24);
-            console.log("中部24小時總雨量", mid_total24, "資料筆數:", mid_length24);
-            console.log("南部24小時總雨量", south_total24, "資料筆數:", south_length24);
-            console.log("東部24小時總雨量", east_total24, "資料筆數:", east_length24);
+            // console.log("北部24小時總雨量", north_total24, "資料筆數:", north_length24);
+            // console.log("中部24小時總雨量", mid_total24, "資料筆數:", mid_length24);
+            // console.log("南部24小時總雨量", south_total24, "資料筆數:", south_length24);
+            // console.log("東部24小時總雨量", east_total24, "資料筆數:", east_length24);
 
             // 各地區60分鐘總降雨量
             $("#60min_total").on("click", function () {
