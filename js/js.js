@@ -26,7 +26,10 @@ $(document).ready(function () {
             // console.log("month", time0.getMonth() + 1);
             // console.log("day", time0.getDate());
             // console.log("hour", time0.getHours());
+            // console.log("min", time0.getMinutes());
+            // console.log("sec", time0.getSeconds());
             // console.log("資料筆數:", data.length);
+            $("#now").text(`資料最後更新時間:${time0.getHours()}:${time0.getMinutes()}`);
 
             $("h1").prepend(`${time0.getFullYear()}/${time0.getMonth() + 1}/${time0.getDate()}`);
             $("tr>th").eq(1).text(`縣市`)
