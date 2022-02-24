@@ -1,0 +1,21 @@
+/* #test999:nth-of-type(odd) {
+    background-color: #d78b92;
+}
+#test999:nth-of-type(odd):hover {
+     background-color: #db636e;
+} */
+#northPart:hover {
+    background-color: #5aad6d;
+}
+
+#midPart:hover {
+    background-color: #5db1bf;
+}
+
+#southPart:hover {
+    background-color: #ffda6a;
+}
+
+#eastPart:hover {
+    background-color: #db636e;
+}
