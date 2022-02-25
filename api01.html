@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API 示範</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+    <!-- Add the slick-theme.css if you want default styling -->
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<!-- Add the slick-theme.css if you want default styling -->
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+    <style>
+        .thumb{
+            width:120px;
+            height:90px;
+        }
+        .sliders img{
+            height:300px;
+        }
+        .img-header{
+            position:absolute;
+            top:0;
+            left:0;
+            background-color: rgba(200,200,200,0.6);
+            text-align: center;
+            font-weight: bolder;
+            font-size:1.2em;
+            width: 100%;
+            padding:10px 0;
+            text-shadow:0 0 5px grey;
+        }
+        #paginator{
+            margin:20px auto;
+            text-align: center;
+        }
+        #paginator a{
+            padding:3px;
+            border:1px solid gray;
+            margin-left:-1px;
+        }
+        #paginator a:hover{
+            background:lightgreen;
+        }
+        .sel-page{
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+<div id="app" class="container">
+    <div class="jumbotron">
+        <div class="sliders">
+
+        </div>
+    </div>
+    <select id="city"></select>
+    <div id="paginator"></div>
+    <table id="list" class="table">
+        <thead>
+            <tr>
+                <th>縮圖(Photo)</th>
+                <th>名稱(Name)</th>
+                <th>地址(Address)</th>
+                <th>電話(Tel)</th>
+                <th>開放時間(OpenHours)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>  
+    
+
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>    
+</body>
+</html>
+
+<script>
+//https://data.coa.gov.tw/OpenData/Service/OpenData/ODwsv/ODwsvTravelStay.aspx
+let city=new Array();
+let source
+$.get("https://data.coa.gov.tw/OpenData/Service/OpenData/ODwsv/ODwsvTravelStay.aspx",(res)=>{
+
+    res.forEach(item=>{
+        //console.log(item.City)
+        if(city.indexOf(item.City)==-1){
+            city.push(item.City)
+        }
+    })
+
+    res.sort(function(a,b){
+        return a.City.localeCompare(b.City)
+    })
+
+    //指定為全域變數
+    source=res
+    $(".sliders").slick()
+
+    makeDropSelect(city)
+    makeDataTable(res,"全部",1)
+
+    $("#city").on("change",(e)=>{
+        let selectCity=$(e.target).val()
+        makeDataTable(res,selectCity,1)
+    })
+
+})
+
+
+function sliders(data){
+    console.log(data)
+    $(".sliders").slick("unslick")
+    $(".sliders").html("")
+    data.forEach(item=>{
+        let img=`<div style='position:relative'>
+                    <div class='img-header'>${item.Name}</div>
+                    <img src='${item.Photo}'>
+                </div>`
+        $(".sliders").append(img)
+    })
+    
+
+    $(".sliders").slick({
+        dots: true,
+        infinite: true,
+        slidesToShow: 2,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2000,
+    })
+
+}
+
+function page(num){
+    makeDataTable(source,'全部',num)
+}
+
+
+function makeDropSelect(array){
+    let option="";
+    array.forEach(city=>{
+        option=option+`<option value='${city}'>${city}</option>`
+    })
+    $("#city").html(option)
+}
+
+function makeDataTable(data,city,page){
+    let tr,td,text,img,show
+    let tableData
+    
+    let cell=['Photo','Name','Address','Tel','OpenHours']
+    if(city=='全部'){
+        show=data
+    }else{
+        show=new Array();
+        data.forEach(item=>{
+            if(item.City==city){
+                show.push(item)
+            }
+        })
+    }
+    $("#list tbody").html("")
+
+    let all=data.length;
+    let div=10
+    let pages=Math.ceil(all/10)
+    let now=page
+    let start=(now-1)*div
+     tableData=show.slice(start,(start+div));
+    let pg=""
+    $("#paginator").html(function(){
+        let prev=(now-1>0)?now-1:1
+        pg=`<a href='javascript:page(${prev})'> < </a>`
+
+        for(let i=1;i<=pages;i++){
+            let sel=(i==page)?'sel-page':'';
+            pg=pg+`<a href='javascript:page(${i})' class='${sel}'>&nbsp;${i}&nbsp;</a>`
+        }
+
+        let next=(now+1<=pages)?now+1:pages
+        pg=pg+`<a href='javascript:page(${next})'> > </a>`
+        return pg
+    })
+
+    tableData.forEach(d=>{
+
+    tr=document.createElement("tr")
+
+        cell.forEach((c,idx)=>{
+            td=document.createElement("td")
+            
+            if(idx==0){
+                img=document.createElement("img")
+                img.setAttribute("src",d[c])
+                img.setAttribute("class",'thumb')
+                td.appendChild(img)
+            }else{
+                text=document.createTextNode(d[c])
+                td.appendChild(text)
+            }
+            tr.appendChild(td)
+        })
+
+        $("#list tbody").append(tr)
+    })
+
+    let sliderData=tableData.slice(0,5)
+    sliders(sliderData)
+}
+</script>
