@@ -29,6 +29,8 @@ $(document).ready(function () {
             // console.log("min", time0.getMinutes());
             // console.log("sec", time0.getSeconds());
             // console.log("資料筆數:", data.length);
+            
+
             $("#now").text(`資料最後更新時間:${time0.getHours()}時${time0.getMinutes()}分`);
 
             $("h1").prepend(`${time0.getFullYear()}/${time0.getMonth() + 1}/${time0.getDate()}`);
@@ -91,6 +93,42 @@ $(document).ready(function () {
                     //   order: [[ 7, 'desc' ]]
                 } 
             );
+
+            // 下拉式選單
+            let city=[];
+            data.forEach(item=>{
+                // console.log(item.parameter[0].parameterValue)
+                if(city.indexOf(item.parameter[0].parameterValue)==-1){
+                    city.push(item.parameter[0].parameterValue)
+                }
+            })
+            // console.log(city);
+            select(city);
+
+            $("#city").on("change",(e)=>{
+                $("#table_id").DataTable().destroy();
+                $("tbody").html("");
+                let selectCity=$(e.target).val()
+                $("h1").text(`${time0.getFullYear()}/${time0.getMonth() + 1}/${time0.getDate()} ${selectCity}累積降雨量`);
+                // console.log(selectCity);
+                for(i=1;i<=data.length;i++){
+                    console.log(data[i].parameter[0].parameterValue==selectCity);
+                    // if(data[i].parameter[0].parameterValue==selectCity){
+                    //     $("tbody").append(`
+                    //         <tr>
+                    //             <td>${i + 1}</td>
+                    //             <td>${data[i].parameter[0].parameterValue}</td>
+                    //             <td>${data[i].locationName}</td>
+                    //             <td>${data[i].weatherElement[1].elementValue.value}mm</td>
+                    //             <td>${data[i].weatherElement[3].elementValue.value}mm</td>
+                    //             <td>${data[i].weatherElement[4].elementValue.value}mm</td>
+                    //             <td>${data[i].weatherElement[5].elementValue.value}mm</td>
+                    //             <td>${data[i].weatherElement[6].elementValue.value}mm</td>
+                    //         </tr>`);
+                    // }
+                }
+                
+            })
 
             const north = ["新北市", "臺北市", "基隆市", "新竹市", "桃園市", "新竹縣", "宜蘭縣"];
             const mid = ["臺中市", "苗栗縣", "彰化縣", "南投縣", "雲林縣"];
@@ -412,4 +450,11 @@ $(document).ready(function () {
             });
         }
     });
+    function select(array){
+        let option="";
+        array.forEach(city=>{
+            option=option+`<option value='${city}'>${city}</option>`
+        })
+        $("#city").html(option)
+    }
 });
