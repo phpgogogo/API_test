@@ -41,6 +41,21 @@ $(document).ready(function () {
             $("tr>th").eq(7).text(`24小時累積雨量`)
 
             for (i = 0; i < data.length; i++) {
+                if(parseFloat(data[i].weatherElement[1].elementValue.value)<0){
+                    data[i].weatherElement[1].elementValue.value="0.00";
+                }
+                if(parseFloat(data[i].weatherElement[3].elementValue.value)<0){
+                    data[i].weatherElement[3].elementValue.value="0.00";
+                }
+                if(parseFloat(data[i].weatherElement[4].elementValue.value)<0){
+                    data[i].weatherElement[4].elementValue.value="0.00";
+                }
+                if(parseFloat(data[i].weatherElement[5].elementValue.value)<0){
+                    data[i].weatherElement[5].elementValue.value="0.00";
+                }
+                if(parseFloat(data[i].weatherElement[6].elementValue.value)<0){
+                    data[i].weatherElement[6].elementValue.value="0.00";
+                }
                 $("tbody").append(`
             <tr>
                 <td>${i + 1}</td>
@@ -53,7 +68,29 @@ $(document).ready(function () {
                 <td>${data[i].weatherElement[6].elementValue.value}mm</td>
             </tr>`);
             }
-            $("#table_id").DataTable();
+            // 幫dataTable新增判斷數字+字串的排序方法
+            jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+                "formatted-num-pre": function ( a ) {
+                    a = (a === "-" || a === "") ? 0 : a.replace( /[^\d\-\.]/g, "" );
+                    return parseFloat( a );
+                },
+             
+                "formatted-num-asc": function ( a, b ) {
+                    return a - b;
+                },
+             
+                "formatted-num-desc": function ( a, b ) {
+                    return b - a;
+                }
+            } );
+            $("#table_id").DataTable(
+                {
+                    columnDefs: [
+                        { type: 'formatted-num', targets: [3,4,5,6,7] }
+                      ],
+                    //   order: [[ 7, 'desc' ]]
+                } 
+            );
 
             const north = ["新北市", "臺北市", "基隆市", "新竹市", "桃園市", "新竹縣", "宜蘭縣"];
             const mid = ["臺中市", "苗栗縣", "彰化縣", "南投縣", "雲林縣"];
@@ -80,7 +117,14 @@ $(document).ready(function () {
                 }
                 $("#table_id").find('tr').first().removeClass();
                 $("#table_id").find('tr').first().addClass("table-primary");
-                $("#table_id").DataTable();
+                $("#table_id").DataTable(
+                    {
+                        columnDefs: [
+                            { type: 'formatted-num', targets: [3,4,5,6,7] }
+                          ],
+                        //   order: [[ 7, 'desc' ]]
+                    } 
+                );
 
             })
 
@@ -108,7 +152,14 @@ $(document).ready(function () {
                 }
                 $("#table_id").find('tr').first().removeClass();
                 $("#table_id").find('tr').first().addClass("table-success");
-                $("#table_id").DataTable();
+                $("#table_id").DataTable(
+                    {
+                        columnDefs: [
+                            { type: 'formatted-num', targets: [3,4,5,6,7] }
+                          ],
+                        //   order: [[ 7, 'desc' ]]
+                    } 
+                );
 
             })
             $("#mid").on("click", function () {
@@ -132,7 +183,14 @@ $(document).ready(function () {
                 }
                 $("#table_id").find('tr').first().removeClass();
                 $("#table_id").find('tr').first().addClass("table-info");
-                $("#table_id").DataTable();
+                $("#table_id").DataTable(
+                    {
+                        columnDefs: [
+                            { type: 'formatted-num', targets: [3,4,5,6,7] }
+                          ],
+                        //   order: [[ 7, 'desc' ]]
+                    } 
+                );
 
             })
             $("#south").on("click", function () {
@@ -156,7 +214,14 @@ $(document).ready(function () {
                 }
                 $("#table_id").find('tr').first().removeClass();
                 $("#table_id").find('tr').first().addClass("table-warning");
-                $("#table_id").DataTable();
+                $("#table_id").DataTable(
+                    {
+                        columnDefs: [
+                            { type: 'formatted-num', targets: [3,4,5,6,7] }
+                          ],
+                        //   order: [[ 7, 'desc' ]]
+                    } 
+                );
 
             })
             $("#east").on("click", function () {
@@ -180,7 +245,14 @@ $(document).ready(function () {
                 }
                 $("#table_id").find('tr').first().removeClass();
                 $("#table_id").find('tr').first().addClass("table-danger");
-                $("#table_id").DataTable();
+                $("#table_id").DataTable(
+                    {
+                        columnDefs: [
+                            { type: 'formatted-num', targets: [3,4,5,6,7] }
+                          ],
+                        //   order: [[ 7, 'desc' ]]
+                    } 
+                );
 
             })
             // $("#all").on("click", function () {
