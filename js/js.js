@@ -29,7 +29,7 @@ $(document).ready(function () {
             // console.log("min", time0.getMinutes());
             // console.log("sec", time0.getSeconds());
             // console.log("資料筆數:", data.length);
-            $("#now").text(`資料最後更新時間:${time0.getHours()}:${time0.getMinutes()}`);
+            $("#now").text(`資料最後更新時間:${time0.getHours()}時${time0.getMinutes()}分`);
 
             $("h1").prepend(`${time0.getFullYear()}/${time0.getMonth() + 1}/${time0.getDate()}`);
             $("tr>th").eq(1).text(`縣市`)
