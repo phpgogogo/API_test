@@ -29,6 +29,9 @@ $(document).ready(function () {
             // console.log("min", time0.getMinutes());
             // console.log("sec", time0.getSeconds());
             // console.log("資料筆數:", data.length);
+
+            //指定為全域變數
+            source=result;
             
 
             $("#now").text(`資料最後更新時間:${time0.getHours()}時${time0.getMinutes()}分`);
@@ -111,22 +114,32 @@ $(document).ready(function () {
                 let selectCity=$(e.target).val()
                 $("h1").text(`${time0.getFullYear()}/${time0.getMonth() + 1}/${time0.getDate()} ${selectCity}累積降雨量`);
                 // console.log(selectCity);
-                for(i=1;i<=data.length;i++){
-                    console.log(data[i].parameter[0].parameterValue==selectCity);
-                    // if(data[i].parameter[0].parameterValue==selectCity){
-                    //     $("tbody").append(`
-                    //         <tr>
-                    //             <td>${i + 1}</td>
-                    //             <td>${data[i].parameter[0].parameterValue}</td>
-                    //             <td>${data[i].locationName}</td>
-                    //             <td>${data[i].weatherElement[1].elementValue.value}mm</td>
-                    //             <td>${data[i].weatherElement[3].elementValue.value}mm</td>
-                    //             <td>${data[i].weatherElement[4].elementValue.value}mm</td>
-                    //             <td>${data[i].weatherElement[5].elementValue.value}mm</td>
-                    //             <td>${data[i].weatherElement[6].elementValue.value}mm</td>
-                    //         </tr>`);
-                    // }
+                for(i=0;i<data.length;i++){
+                    // console.log(data[i].parameter[0].parameterValue==selectCity);
+                    if(data[i].parameter[0].parameterValue==selectCity){
+                        $("tbody").append(`
+                            <tr>
+                                <td>${i + 1}</td>
+                                <td>${data[i].parameter[0].parameterValue}</td>
+                                <td>${data[i].locationName}</td>
+                                <td>${data[i].weatherElement[1].elementValue.value}mm</td>
+                                <td>${data[i].weatherElement[3].elementValue.value}mm</td>
+                                <td>${data[i].weatherElement[4].elementValue.value}mm</td>
+                                <td>${data[i].weatherElement[5].elementValue.value}mm</td>
+                                <td>${data[i].weatherElement[6].elementValue.value}mm</td>
+                            </tr>`);
+                    }
                 }
+                $("#table_id").find('tr').first().removeClass();
+                $("#table_id").find('tr').first().addClass("table-secondary");
+                $("#table_id").DataTable(
+                    {
+                        columnDefs: [
+                            { type: 'formatted-num', targets: [3,4,5,6,7] }
+                          ],
+                        //   order: [[ 7, 'desc' ]]
+                    } 
+                );
                 
             })
 
@@ -293,11 +306,6 @@ $(document).ready(function () {
                 );
 
             })
-            // $("#all").on("click", function () {
-            //     location.reload();
-
-            // })
-            // $("#table_id").DataTable();
 
             // 撈出各地區60分鐘總雨量
             north_total = 0;
@@ -449,12 +457,15 @@ $(document).ready(function () {
                 }
             });
         }
+
     });
+    
     function select(array){
-        let option="";
+        let option="`<option value=''></option>`";
         array.forEach(city=>{
-            option=option+`<option value='${city}'>${city}</option>`
+            option=option+`<option value='${city}'>${city}</option>`;
         })
         $("#city").html(option)
     }
+    
 });
